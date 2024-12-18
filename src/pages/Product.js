@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../redux/slice/cartSlice";
 
 const Product = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [quantity, setQuantity] = useState(1);
@@ -15,6 +16,12 @@ const Product = () => {
   );
 
   const addToCart = (product, quantity) => {
+    let token = localStorage.getItem("authToken");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     if (quantity > product.quantity) {
       alert("Quantity exceeds available stock!");
       return;
@@ -33,6 +40,11 @@ const Product = () => {
     );
 
     alert(`${product.title} added to cart!`);
+  };
+
+  const handleQuantityChange = (value) => {
+    const newQuantity = Math.max(1, Math.min(value, product.quantity));
+    setQuantity(newQuantity);
   };
 
   return product ? (
@@ -63,18 +75,16 @@ const Product = () => {
               <div className="flex space-x-4">
                 <button
                   onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}
-                  className="mx-1"
+                  className="border p-2 hover:bg-gray-200"
                 >
                   -
                 </button>
                 <input
-                  className="mx-2 border text-center w-12"
+                  className="border text-center w-12"
                   type="number"
                   value={quantity}
                   onChange={(e) =>
-                    setQuantity(
-                      Math.max(1, Math.min(e.target.value, product.quantity))
-                    )
+                    handleQuantityChange(parseInt(e.target.value))
                   }
                   min="1"
                   max={product.quantity}
@@ -83,25 +93,31 @@ const Product = () => {
                   onClick={() =>
                     setQuantity((prev) => Math.min(prev + 1, product.quantity))
                   }
-                  className="mx-1"
+                  className="border p-2 hover:bg-gray-200"
                 >
                   +
                 </button>
+              </div>
+            </div>
 
+            <div className="mt-4">
+              {product.quantity > 0 ? (
                 <button
                   onClick={() => addToCart(product, quantity)}
-                  className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded mr-2"
+                  className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
                 >
                   Add to Cart
                 </button>
-              </div>
+              ) : (
+                <span className="text-red-500 font-medium">Out of stock</span>
+              )}
             </div>
           </div>
         </div>
       </div>
     </section>
   ) : (
-    <div className="text-center py-20">Loading...</div>
+    <div className="text-center py-20">Loading product details...</div>
   );
 };
 

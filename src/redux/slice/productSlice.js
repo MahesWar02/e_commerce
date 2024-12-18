@@ -3,13 +3,26 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Helper function to load products from local storage
 const loadProductsFromLocalStorage = () => {
-  const products = localStorage.getItem("products");
-  return products ? JSON.parse(products) : [];
+  try {
+    const products = localStorage.getItem("products");
+    return products ? JSON.parse(products) : [];
+  } catch (error) {
+    console.error("Failed to load products from local storage:", error);
+    return [];
+  }
 };
 
 // Helper function to save products to local storage
 const saveProductsToLocalStorage = (products) => {
-  localStorage.setItem("products", JSON.stringify(products));
+  try {
+    const uniqueProducts = products.filter(
+      (product, index, self) =>
+        index === self.findIndex((p) => p.id === product.id)
+    ); // Ensure unique IDs
+    localStorage.setItem("products", JSON.stringify(uniqueProducts));
+  } catch (error) {
+    console.error("Failed to save products to local storage:", error);
+  }
 };
 
 const productSlice = createSlice({
@@ -36,6 +49,14 @@ const productSlice = createSlice({
         }
       });
       saveProductsToLocalStorage(state.products); // Save updated stock to local storage
+    },
+    resetProducts(state) {
+      // Reset all product quantities to default (20)
+      state.products = state.products.map((product) => ({
+        ...product,
+        quantity: 20,
+      }));
+      saveProductsToLocalStorage(state.products); // Save reset products to local storage
     },
   },
 });

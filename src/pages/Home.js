@@ -5,13 +5,23 @@ import ProductCard from "../components/ProductCard";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true); // State untuk loader
+  const [error, setError] = useState(null); // State untuk error handling
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await fetch("https://fakestoreapi.com/products");
-      const data = await response.json();
-      console.log(data);
-      setProducts(data.slice(0, 8)); // Batasi hanya 8 produk yang ditampilkan
+      try {
+        const response = await fetch("https://fakestoreapi.com/products");
+        if (!response.ok) {
+          throw new Error("Failed to fetch products"); // Error jika fetch gagal
+        }
+        const data = await response.json();
+        setProducts(data.slice(0, 8)); // Batasi hanya 8 produk yang ditampilkan
+      } catch (err) {
+        setError(err.message); // Simpan pesan error
+      } finally {
+        setLoading(false); // Set loading selesai
+      }
     };
 
     fetchProduct(); // Memanggil fungsi fetchProduct untuk mendapatkan data
@@ -25,24 +35,33 @@ const Home = () => {
           PRODUCT
         </h2>
         <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900">
-          Recomend for U
+          Recommended for You
         </h1>
       </div>
 
-      {products.length > 0 ? (
-        <ProductCard products={products} />
-      ) : (
+      {/* Kondisi untuk Loading, Error, atau Menampilkan Produk */}
+      {loading ? (
         <div className="flex justify-center items-center h-screen">
           <span className="loading loading-ring loading-lg text-indigo-600"></span>
         </div>
+      ) : error ? (
+        <div className="flex justify-center items-center h-screen text-red-600">
+          <p>Error: {error}</p>
+        </div>
+      ) : (
+        <ProductCard products={products} />
       )}
 
-      {/* More Product Link */}
-      <div className="text-center text-xl italic text-indigo-400 font-medium title-font mb-1 hover:text-indigo-700">
-        <Link to="/products">More Product...</Link>
-      </div>
+      <MoreProductsLink />
     </>
   );
 };
+
+// Komponen Link ke Produk Lain
+const MoreProductsLink = () => (
+  <div className="text-center text-xl italic text-indigo-400 font-medium title-font mb-1 hover:text-indigo-700">
+    <Link to="/products">More Products...</Link>
+  </div>
+);
 
 export default Home;
