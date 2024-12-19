@@ -52,7 +52,11 @@ const Products = () => {
   };
 
   if (loading) {
-    return <div className="text-center py-10">Loading products...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <span className="loading loading-ring loading-lg text-indigo-600"></span>
+      </div>
+    );
   }
 
   if (error) {

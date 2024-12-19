@@ -49,16 +49,16 @@ const Navbar = () => {
           >
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
           </svg>
-          <span className="ml-3 text-xl text-indigo-800">GoCart</span>
+          <span className="ml-3 text-xl font-bold text-indigo-500">GoCart</span>
         </Link>
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
           {navigations.map((navigation) => (
             <Link
               to={navigation.path}
               key={navigation.name}
-              className={`mr-5 hover:text-indigo-700 hover:font-semibold ${
+              className={`mr-5 hover:text-indigo-500 hover:font-semibold ${
                 location.pathname === navigation.path
-                  ? "text-indigo-700 font-bold"
+                  ? "text-indigo-500 font-bold"
                   : ""
               }`}
             >

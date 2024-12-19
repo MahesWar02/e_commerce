@@ -40,7 +40,7 @@ const ProductCard = ({ products = [] }) => {
                   </h2>
                   <p className="mt-1 text-sm mb-5">${price}</p>
                 </div>
-                <button className="btn btn-sm btn-outline btn-primary mt-auto mb-3 hover:bg-indigo-200">
+                <button className="btn btn-sm mt-auto mb-3 bg-white text-indigo-500 border border-indigo-500 px-4 py-2 hover:bg-indigo-500 hover:text-white">
                   Buy Now
                 </button>
               </Link>

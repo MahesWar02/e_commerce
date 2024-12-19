@@ -59,7 +59,7 @@ const Home = () => {
 
 // Komponen Link ke Produk Lain
 const MoreProductsLink = () => (
-  <div className="text-center text-xl italic text-indigo-400 font-medium title-font mb-1 hover:text-indigo-700">
+  <div className="text-center mb-10 text-xl italic text-indigo-500 font-medium title-font hover:text-indigo-700">
     <Link to="/products">More Products...</Link>
   </div>
 );

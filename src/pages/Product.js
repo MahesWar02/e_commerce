@@ -53,17 +53,19 @@ const Product = () => {
         <div className="lg:w-4/5 mx-auto flex flex-wrap">
           <img
             alt={product.title}
-            className="lg:w-1/2 w-full lg:h-auto max-h-[500px] h-64 object-contain object-center rounded"
+            className="lg:w-1/2 w-full lg:h-auto max-h-[450px] h-64 object-contain object-center rounded"
             src={product.image}
           />
           <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-            <h2 className="text-sm title-font text-indigo-500 tracking-widest uppercase">
+            <h2 className="text-sm title-font mb-2 text-indigo-500 tracking-widest uppercase">
               {product.category}
             </h2>
-            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
+            <h1 className="text-gray-900  text-3xl title-font font-medium mb-1">
               {product.title}
             </h1>
-            <p className="leading-relaxed">{product.description}</p>
+            <p className="leading-relaxed mt-1 mb-2 text-justify">
+              {product.description}
+            </p>
             <p className="text-lg font-semibold text-indigo-500">
               Available Quantity: {product.quantity}
             </p>
@@ -116,7 +118,9 @@ const Product = () => {
       </div>
     </section>
   ) : (
-    <div className="text-center py-20">Loading product details...</div>
+    <div className="flex justify-center items-center h-screen">
+      <span className="loading loading-ring loading-lg text-indigo-600"></span>
+    </div>
   );
 };
 
