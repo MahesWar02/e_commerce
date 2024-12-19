@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom"; // Gunakan useNavigate untuk navigasi
+import { useNavigate } from "react-router-dom";
 import { authActions } from "../redux/slice/authSlice";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // State untuk pesan error
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Hook navigasi
+  const navigate = useNavigate();
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -18,7 +18,6 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Validasi email dan password sebelum mengirim permintaan
     if (!validateEmail(email)) {
       setErrorMessage("Invalid email format");
       return;
@@ -41,7 +40,7 @@ const LoginPage = () => {
         dispatch(authActions.login(token));
 
         alert("Login successful!");
-        navigate("/"); // Gunakan navigate untuk redirect
+        navigate("/"); // Redirect to home
       } else {
         setErrorMessage("Invalid email or password");
       }
@@ -67,14 +66,11 @@ const LoginPage = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
             </h1>
-
-            {/* Tampilkan Pesan Error Jika Ada */}
             {errorMessage && (
               <div className="text-red-500 text-sm font-medium">
                 {errorMessage}
               </div>
             )}
-
             <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
               <div>
                 <label

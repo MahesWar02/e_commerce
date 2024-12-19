@@ -1,4 +1,3 @@
-// C:\Users\HP\Documents\e_commerce-main\src\redux\slice\authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({

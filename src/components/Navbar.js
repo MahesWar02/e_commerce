@@ -1,5 +1,7 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../redux/slice/authSlice";
 
 const navigations = [
   {
@@ -10,15 +12,23 @@ const navigations = [
     name: "Products",
     path: "/products",
   },
-  {
-    name: "Login",
-    path: "/login",
-  },
 ];
 
 const Navbar = () => {
-  const location = useLocation(); // Get the current URL location
-  const { pathname } = location;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      localStorage.clear();
+      dispatch(authActions.logout());
+      alert("You have been logged out.");
+      navigate("/");
+      window.location.reload();
+    }
+  };
 
   return (
     <header className="text-gray-600 body-font shadow-lg">
@@ -42,27 +52,44 @@ const Navbar = () => {
           <span className="ml-3 text-xl">GoCart</span>
         </Link>
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-          {navigations.map((navigation) => {
-            const isActive = pathname === navigation.path; // Check if the path is active
-            return (
-              <Link
-                to={navigation.path}
-                key={navigation.name}
-                className={`mr-5 hover:text-indigo-700 hover:font-semibold ${
-                  isActive ? "text-indigo-700 font-bold" : ""
-                }`}
-              >
-                {navigation.name}
-              </Link>
-            );
-          })}
+          {navigations.map((navigation) => (
+            <Link
+              to={navigation.path}
+              key={navigation.name}
+              className={`mr-5 hover:text-indigo-700 hover:font-semibold ${
+                location.pathname === navigation.path
+                  ? "text-indigo-700 font-bold"
+                  : ""
+              }`}
+            >
+              {navigation.name}
+            </Link>
+          ))}
+          {isAuthenticated ? (
+            <button
+              onClick={handleLogout}
+              className="mr-5 hover:text-indigo-700 hover:font-semibold text-red-600"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className={`mr-5 hover:text-indigo-700 hover:font-semibold ${
+                location.pathname === "/login"
+                  ? "text-indigo-700 font-bold"
+                  : ""
+              }`}
+            >
+              Login
+            </Link>
+          )}
         </nav>
-        {/* Wrap the cart button with Link */}
         <Link
           to="/cart"
           className="inline-flex items-center text-white bg-indigo-500 border-0 py-2 px-4 focus:outline-none hover:bg-indigo-700 rounded text-base mt-4 md:mt-0"
         >
-          <span>ur cart</span>
+          <span>Your Cart</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
