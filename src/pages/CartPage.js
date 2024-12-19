@@ -26,8 +26,11 @@ const CartPage = () => {
 
   if (carts.length === 0) {
     return (
-      <div className="h-[55vh] flex justify-center items-center text-4xl">
-        Cart is Empty
+      <div className="h-[55vh] flex flex-col justify-center items-center text-4xl">
+        <div>Cart is Empty</div>
+        <div className="text-center text-xl italic text-indigo-400 font-medium title-font mt-4 hover:text-indigo-700">
+          <Link to="/products">see all products</Link>
+        </div>
       </div>
     );
   }

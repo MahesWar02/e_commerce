@@ -81,7 +81,6 @@ const Product = () => {
                 </button>
                 <input
                   className="border text-center w-12"
-                  type="number"
                   value={quantity}
                   onChange={(e) =>
                     handleQuantityChange(parseInt(e.target.value))

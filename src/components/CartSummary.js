@@ -10,10 +10,22 @@ const CartSummary = ({ total, itemCount }) => {
 
   // Get cart items from Redux state
   const cartItems = useSelector((state) => state.cart.items);
+  const products = useSelector((state) => state.products.products); // Ensure you have access to product stock
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
       alert("Keranjang kosong! Silakan tambahkan produk terlebih dahulu.");
+      return;
+    }
+
+    // Check if any cart item exceeds the available stock
+    const outOfStockItem = cartItems.find((cartItem) => {
+      const product = products.find((p) => p.id === cartItem.id);
+      return cartItem.quantity > product.quantity;
+    });
+
+    if (outOfStockItem) {
+      alert(`Stock of item ${outOfStockItem.title} less than your quantity`);
       return;
     }
 

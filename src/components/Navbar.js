@@ -49,7 +49,7 @@ const Navbar = () => {
           >
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
           </svg>
-          <span className="ml-3 text-xl">GoCart</span>
+          <span className="ml-3 text-xl text-indigo-800">GoCart</span>
         </Link>
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
           {navigations.map((navigation) => (
@@ -68,7 +68,7 @@ const Navbar = () => {
           {isAuthenticated ? (
             <button
               onClick={handleLogout}
-              className="mr-5 hover:text-indigo-700 hover:font-semibold text-red-600"
+              className="mr-5 hover:text-red-700 hover:font-semibold text-red-600"
             >
               Logout
             </button>
